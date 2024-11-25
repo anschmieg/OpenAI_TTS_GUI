@@ -1,0 +1,95 @@
+2024-11-25 18:21:17,992:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 18:21:17,993:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 18:21:29,452:DEBUG:Starting create_tts function
+2024-11-25 18:21:29,453:INFO:Text length: 4 characters
+2024-11-25 18:21:29,453:INFO:Estimated price: $0.015
+2024-11-25 18:21:29,453:INFO:Model: tts-1, Voice: alloy, Format: mp3, Speed: 1.0
+2024-11-25 18:21:29,453:INFO:Retain files: False, Streaming: False
+2024-11-25 18:21:30,705:DEBUG:User confirmed to proceed with TTS
+2024-11-25 18:21:30,716:DEBUG:Starting process TTS in a new thread
+2024-11-25 18:21:30,716:DEBUG:Starting process_tts function
+2024-11-25 18:21:30,717:DEBUG:Total chunks to process: 1
+2024-11-25 18:21:30,718:DEBUG:Processing chunk 1/1, progress: 0.0%
+2024-11-25 18:21:30,718:DEBUG:Temporary filename: /Users/adrian/Downloads/test_0.mp3
+2024-11-25 18:21:30,721:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 18:21:31,000:DEBUG:https://api.openai.com:443 "POST /v1/models/tts-1/completions HTTP/1.1" 404 None
+2024-11-25 18:21:31,004:ERROR:Failed to create TTS: 404
+{
+  "error": {
+    "message": "Invalid URL (POST /v1/models/tts-1/completions)",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": null
+  }
+}
+
+2024-11-25 18:21:31,007:ERROR:Failed to save chunk 1
+2024-11-25 18:21:31,007:ERROR:Temporary file /Users/adrian/Downloads/test_0.mp3 does not exist and cannot be deleted.
+2024-11-25 18:22:45,040:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 18:22:45,041:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 18:22:57,416:DEBUG:Starting create_tts function
+2024-11-25 18:22:57,416:INFO:Text length: 4 characters
+2024-11-25 18:22:57,416:INFO:Estimated price: $0.015
+2024-11-25 18:22:57,417:INFO:Model: tts-1, Voice: alloy, Format: mp3, Speed: 1.0
+2024-11-25 18:22:57,417:INFO:Retain files: False, Streaming: False
+2024-11-25 18:22:58,603:DEBUG:User confirmed to proceed with TTS
+2024-11-25 18:22:58,613:DEBUG:Starting process TTS in a new thread
+2024-11-25 18:22:58,613:DEBUG:Starting process_tts function
+2024-11-25 18:22:58,614:DEBUG:Total chunks to process: 1
+2024-11-25 18:22:58,614:DEBUG:Processing chunk 1/1, progress: 0.0%
+2024-11-25 18:22:58,614:DEBUG:Temporary filename: /Users/adrian/Downloads/test_0.mp3
+2024-11-25 18:22:58,614:DEBUG:Sending TTS request for chunk: test...
+2024-11-25 18:22:58,618:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 18:23:00,353:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-25 18:23:00,472:DEBUG:Successfully saved chunk to /Users/adrian/Downloads/test_0.mp3
+2024-11-25 18:23:00,476:DEBUG:All chunks processed, concatenating audio files
+2024-11-25 18:23:00,478:INFO:Renamed single chunk to /Users/adrian/Downloads/test.mp3
+2024-11-25 18:23:00,478:DEBUG:Final audio file saved to /Users/adrian/Downloads/test.mp3
+2024-11-25 18:23:00,481:DEBUG:Cleaning up temporary files
+2024-11-25 18:23:00,481:ERROR:Temporary file /Users/adrian/Downloads/test_0.mp3 does not exist and cannot be deleted.
+2024-11-25 18:23:00,481:DEBUG:Finished process_tts function
+2024-11-25 19:25:46,967:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 19:25:46,971:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 19:25:57,359:DEBUG:Streaming TTS request for: some words...
+2024-11-25 19:25:57,364:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 19:25:58,907:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-25 19:25:58,909:ERROR:Error during streaming TTS: [Errno 2] No such file or directory: ''
+Traceback (most recent call last):
+  File "/Users/adrian/Projects/OpenAI_TTS_GUI/tts.py", line 175, in stream_tts
+    with open(path, "wb") as file:
+         ^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: ''
+2024-11-25 19:26:25,126:DEBUG:Streaming TTS request for: some words...
+2024-11-25 19:26:25,135:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 19:26:26,402:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-25 19:26:26,405:ERROR:Error during streaming TTS: [Errno 2] No such file or directory: ''
+Traceback (most recent call last):
+  File "/Users/adrian/Projects/OpenAI_TTS_GUI/tts.py", line 175, in stream_tts
+    with open(path, "wb") as file:
+         ^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: ''
+2024-11-25 19:42:08,606:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 19:42:08,609:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 19:42:21,269:DEBUG:Starting create_tts function
+2024-11-25 19:42:21,270:INFO:Text length: 7 characters
+2024-11-25 19:42:21,270:INFO:Estimated price: $0.015
+2024-11-25 19:42:21,270:INFO:Model: tts-1, Voice: alloy, Format: mp3, Speed: 1.0
+2024-11-25 19:42:21,270:INFO:Retain files: False, Streaming: False
+2024-11-25 19:42:22,805:DEBUG:User confirmed to proceed with TTS
+2024-11-25 19:42:22,816:DEBUG:Starting process TTS in a new thread
+2024-11-25 19:42:22,817:DEBUG:Starting process_tts function
+2024-11-25 19:42:22,818:DEBUG:Total chunks to process: 1
+2024-11-25 19:42:22,818:DEBUG:Processing chunk 1/1, progress: 0.0%
+2024-11-25 19:42:22,818:DEBUG:Temporary filename: /Users/adrian/Downloads/test_0.mp3
+2024-11-25 19:42:22,818:DEBUG:Sending TTS request for chunk: test me...
+2024-11-25 19:42:22,821:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 19:42:24,861:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-25 19:42:24,920:DEBUG:Successfully saved chunk to /Users/adrian/Downloads/test_0.mp3
+2024-11-25 19:42:24,922:DEBUG:All chunks processed, concatenating audio files
+2024-11-25 19:42:24,922:INFO:Renamed single chunk to /Users/adrian/Downloads/test.mp3
+2024-11-25 19:42:24,923:DEBUG:Final audio file saved to /Users/adrian/Downloads/test.mp3
+2024-11-25 19:42:24,925:DEBUG:Cleaning up temporary files
+2024-11-25 19:42:24,925:ERROR:Temporary file /Users/adrian/Downloads/test_0.mp3 does not exist and cannot be deleted.
+2024-11-25 19:42:24,925:DEBUG:Finished process_tts function
+2024-11-25 19:42:53,716:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 19:42:53,721:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'

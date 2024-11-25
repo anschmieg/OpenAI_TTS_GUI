@@ -1,9 +1,9 @@
 import os
+import sys
 import subprocess
-import requests
-import time
 import logging
 from decimal import Decimal
+from dotenv import load_dotenv
 
 # Constants for price and API calls
 TTS_PRICE_PER_1K_CHARS = Decimal("0.015")
@@ -19,6 +19,14 @@ logging.basicConfig(
 
 
 def split_text(text, chunk_size=4096):
+    """
+    Splits a given text into chunks of a specified maximum size.
+    Args:
+        text (str): The input text to be split.
+        chunk_size (int, optional): The maximum size of each chunk. Defaults to 4096.
+    Returns:
+        list of str: A list of text chunks, each with a length up to `chunk_size`.
+    """
     if len(text) <= chunk_size:
         return [text]
     chunks = []
@@ -42,6 +50,16 @@ def split_text(text, chunk_size=4096):
 
 
 def estimate_price(char_count, hd=False):
+    """
+    Estimate the price for text-to-speech (TTS) service based on character count.
+
+    Args:
+        char_count (int): The number of characters in the text.
+        hd (bool, optional): If True, use the high-definition (HD) price rate. Defaults to False.
+
+    Returns:
+        float: The estimated price for the TTS service, rounded to three decimal places.
+    """
     if char_count == 0:
         return 0.000
     token_price = TTS_PRICE_PER_1K_CHARS if not hd else TTS_HD_PRICE_PER_1K_CHARS
@@ -51,22 +69,86 @@ def estimate_price(char_count, hd=False):
 
 
 def read_api_key():
+    """
+    Reads the OpenAI API key from the environment variable, .env file, or api_key.txt file (in that order).
+    If all attempts fail, it prints an error message and exits the program.
+
+    Returns:
+        str: The OpenAI API key.
+
+    Raises:
+        SystemExit: If the API key cannot be found in the environment variable, .env file, or api_key.txt file.
+    """
+    # Check if environment variable OPENAI_API_KEY is set
     api_key = os.getenv("OPENAI_API_KEY")
     if api_key:
         return api_key
+
+    # Try loading from .env file
+    print("API key not set. Trying to load from .env file.")
+    try:
+        load_dotenv()
+        api_key = os.getenv("OPENAI_API_KEY")
+        if api_key:
+            return api_key
+    except Exception as e:
+        print(f"Error loading .env file: {e}")
+
+    # Try loading from api_key.txt file
+    print("Trying api_key.txt file.")
     try:
         with open("api_key.txt", "r") as file:
-            return file.read().strip()
-    except FileNotFoundError:
-        return None
+            api_key = file.read().strip()
+            os.environ["OPENAI_API_KEY"] = api_key
+            return api_key
+    except Exception as e:
+        print(f"Error reading api_key.txt file: {e}")
+
+    # If all attempts fail, exit the program
+    print(
+        "No API key found. Set the API key in the environment variable 'OPENAI_API_KEY'."
+    )
+    sys.exit(1)
 
 
-def save_api_key(api_key):
-    with open("api_key.txt", "w") as file:
-        file.write(api_key)
+def write_api_key(api_key):
+    """
+    Writes the provided API key to a file. If a .env file exists, the API key is written to it.
+    If a .env file does not exist but an api_key.txt file exists, the API key is written to it instead.
+
+    Args:
+        api_key (str): The API key to be written.
+
+    Returns:
+        bool: True if the API key was successfully written, False otherwise.
+    """
+    try:
+        if os.path.exists(".env"):
+            with open(".env", "r+") as env_file:
+                content = env_file.read()
+                env_file.seek(0, 0)
+                env_file.write(f"OPENAI_API_KEY={api_key}\n" + content)
+        elif os.path.exists("api_key.txt"):
+            with open("api_key.txt", "r+") as key_file:
+                content = key_file.read()
+                key_file.seek(0, 0)
+                key_file.write(f"{api_key}\n" + content)
+        else:
+            return False
+        return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
 
 
 def concatenate_audio_files(file_list, output_file):
+    """
+    Concatenates multiple audio files into a single output file.
+
+    Args:
+        file_list (list of str): List of paths to the audio files to be concatenated.
+        output_file (str): Path to the output file where the concatenated audio will be saved.
+    """
     if len(file_list) == 1:
         os.rename(file_list[0], output_file)
         logging.info(f"Renamed single chunk to {output_file}")
@@ -76,16 +158,6 @@ def concatenate_audio_files(file_list, output_file):
         output_dir = os.path.dirname(output_file)
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        concat_list_path = os.path.join(output_dir, "concat_list.txt")
-
-        with open(concat_list_path, "w") as f:
-            for file_path in file_list:
-                if os.path.exists(file_path):
-                    f.write(f"file '{file_path}'\n")
-                else:
-                    logging.error(
-                        f"File {file_path} does not exist and will not be concatenated."
-                    )
 
         output_extension = os.path.splitext(output_file)[1].lower()
         if output_extension == ".mp3":
@@ -106,46 +178,48 @@ def concatenate_audio_files(file_list, output_file):
             "-safe",
             "0",
             "-i",
-            concat_list_path,
+            "-",
             "-c:a",
             codec,
             output_file,
         ]
 
+        concat_list = "\n".join(
+            f"file '{file_path}'"
+            for file_path in file_list
+            if os.path.exists(file_path)
+        )
+        if not concat_list:
+            logging.error("No valid files to concatenate.")
+            return
+
         logging.info(f"Running ffmpeg command: {' '.join(concat_command)}")
         result = subprocess.run(
-            concat_command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            concat_command,
+            input=concat_list.encode(),
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
         logging.info(result.stdout.decode())
         logging.error(result.stderr.decode())
-        os.remove(concat_list_path)
         logging.info(f"Concatenated audio files into {output_file}")
     except Exception as e:
         logging.error(f"Error in concatenating audio files: {e}")
 
 
-def rate_limited_request(api_key, data, model):
-    last_request_time = 0
-    min_interval = 60 / 50
-    if "hd" in model:
-        min_interval = 60 / 3
-
-    elapsed = time.time() - last_request_time
-    if elapsed < min_interval:
-        time.sleep(min_interval - elapsed)
-    response = requests.post(
-        "https://api.openai.com/v1/audio/speech",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        json=data,
-    )
-    last_request_time = time.time()
-    return response
-
-
 def cleanup_files(file_list, retain_files):
+    """
+    Deletes files from the provided list if retain_files is False.
+
+    Args:
+        file_list (list): List of file paths to be deleted.
+        retain_files (bool): Flag indicating whether to retain the files. If False, files will be deleted.
+
+    Logs:
+        Info: When a file is successfully deleted.
+        Error: When a file does not exist or fails to be deleted.
+    """
     if not retain_files:
         for file in file_list:
             if os.path.exists(file):
