@@ -93,3 +93,138 @@ FileNotFoundError: [Errno 2] No such file or directory: ''
 2024-11-25 19:42:24,925:DEBUG:Finished process_tts function
 2024-11-25 19:42:53,716:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
 2024-11-25 19:42:53,721:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 21:13:07,277:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 21:13:07,281:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 21:17:40,232:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 21:17:40,237:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 21:17:44,584:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmp033yqt9t.mp3
+2024-11-25 21:17:44,589:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 21:17:46,260:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-25 21:17:46,374:INFO:Audio streaming and playback started
+2024-11-25 21:27:41,380:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 21:27:41,381:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 21:27:48,350:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmp8wp5liw9.wav
+2024-11-25 21:27:48,355:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 21:27:50,298:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-25 21:27:50,628:INFO:Audio streaming and playback started
+2024-11-25 21:27:50,628:DEBUG:Cleaned up temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmp8wp5liw9.wav
+2024-11-25 21:28:21,396:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpr0lkc3d0.wav
+2024-11-25 21:28:21,401:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 21:28:22,854:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-25 21:28:28,156:INFO:Audio streaming and playback started
+2024-11-25 21:28:28,158:DEBUG:Cleaned up temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpr0lkc3d0.wav
+2024-11-25 21:43:05,474:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 21:43:05,477:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 21:48:07,901:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 21:48:07,905:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 21:49:46,827:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-25 21:49:46,828:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-25 21:50:00,564:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpxfp6kgcy.wav
+2024-11-25 21:50:00,569:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-25 21:50:01,703:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-25 21:50:01,871:ERROR:Error during streaming TTS: 'PyQt6.QtCore.pyqtSignal' object has no attribute 'connect'
+Traceback (most recent call last):
+  File "/Users/adrian/Projects/OpenAI_TTS_GUI/tts.py", line 165, in stream_tts
+    window.playback_control.connect(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PyQt6.QtCore.pyqtSignal' object has no attribute 'connect'
+2024-11-25 21:50:11,299:DEBUG:Cleaned up temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpxfp6kgcy.wav
+2024-11-26 10:34:00,885:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-26 10:34:00,887:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-26 10:34:06,535:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmppt_d45s6.wav
+2024-11-26 10:34:06,540:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-26 10:34:08,996:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-26 10:34:09,234:ERROR:Error during streaming TTS: 'PyQt6.QtCore.pyqtSignal' object has no attribute 'connect'
+Traceback (most recent call last):
+  File "/Users/adrian/Projects/OpenAI_TTS_GUI/tts.py", line 165, in stream_tts
+    window.playback_control.connect(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PyQt6.QtCore.pyqtSignal' object has no attribute 'connect'
+2024-11-26 10:34:22,344:DEBUG:Cleaned up temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmppt_d45s6.wav
+2024-11-26 10:35:48,672:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-26 10:35:48,673:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-26 10:35:54,635:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpaamav_4o.wav
+2024-11-26 10:35:54,640:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-26 10:35:56,107:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-26 10:35:56,249:ERROR:Error during streaming TTS: 'PyQt6.QtCore.pyqtSignal' object has no attribute 'connect'
+Traceback (most recent call last):
+  File "/Users/adrian/Projects/OpenAI_TTS_GUI/tts.py", line 165, in stream_tts
+    window.playback_control.connect(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PyQt6.QtCore.pyqtSignal' object has no attribute 'connect'
+2024-11-26 10:36:02,240:DEBUG:Cleaned up temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpaamav_4o.wav
+2024-11-26 11:02:32,537:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-26 11:02:32,540:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-26 11:02:51,127:DEBUG:Starting create_tts function
+2024-11-26 11:02:51,133:INFO:Estimated price: $0.015
+2024-11-26 11:02:52,077:DEBUG:User confirmed to proceed with TTS
+2024-11-26 11:02:52,092:DEBUG:Starting process_tts function
+2024-11-26 11:02:52,092:DEBUG:Total chunks to process: 1
+2024-11-26 11:02:52,093:DEBUG:Processing chunk 1/1, progress: 0.0%
+2024-11-26 11:02:52,093:DEBUG:Temporary filename: /Users/adrian/Downloads/test_0.mp3
+2024-11-26 11:02:52,093:DEBUG:Sending TTS request for chunk: test me...
+2024-11-26 11:02:52,107:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-26 11:02:53,564:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-26 11:02:53,657:DEBUG:Successfully saved chunk to /Users/adrian/Downloads/test_0.mp3
+2024-11-26 11:02:53,659:DEBUG:All chunks processed, concatenating audio files
+2024-11-26 11:02:53,660:INFO:Renamed single chunk to /Users/adrian/Downloads/test.mp3
+2024-11-26 11:02:53,660:DEBUG:Final audio file saved to /Users/adrian/Downloads/test.mp3
+2024-11-26 11:02:53,662:DEBUG:Cleaning up temporary files
+2024-11-26 11:02:53,663:ERROR:Temporary file /Users/adrian/Downloads/test_0.mp3 does not exist and cannot be deleted.
+2024-11-26 11:02:53,663:DEBUG:Finished process_tts function
+2024-11-26 11:03:01,282:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpbvjxof1e.wav
+2024-11-26 11:03:01,296:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-26 11:03:03,255:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-26 11:03:03,536:ERROR:Error during streaming TTS: 'TTSWindow' object has no attribute 'playback_control'
+Traceback (most recent call last):
+  File "/Users/adrian/Projects/OpenAI_TTS_GUI/tts.py", line 165, in stream_tts
+    window.playback_control.connect(
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'TTSWindow' object has no attribute 'playback_control'
+2024-11-26 11:26:01,127:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-26 11:26:01,131:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-26 11:36:21,384:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-26 11:36:21,388:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-26 11:36:31,179:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmp5aglefzt.wav
+2024-11-26 11:36:31,185:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-26 11:36:32,195:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-26 11:36:32,313:ERROR:Error during streaming TTS: 'TTSWindow' object has no attribute 'playback_control'
+Traceback (most recent call last):
+  File "/Users/adrian/Projects/OpenAI_TTS_GUI/tts.py", line 165, in stream_tts
+    window.playback_control.connect(
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'TTSWindow' object has no attribute 'playback_control'
+2024-11-26 11:36:32,339:DEBUG:Cleaned up temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmp5aglefzt.wav
+2024-11-26 11:36:44,042:DEBUG:Starting create_tts function
+2024-11-26 11:36:44,043:ERROR:Invalid path provided
+2024-11-26 11:36:52,206:DEBUG:Starting create_tts function
+2024-11-26 11:36:52,209:INFO:Estimated price: $0.015
+2024-11-26 11:36:53,577:DEBUG:User confirmed to proceed with TTS
+2024-11-26 11:36:53,585:DEBUG:Starting process_tts function
+2024-11-26 11:36:53,585:DEBUG:Total chunks to process: 1
+2024-11-26 11:36:53,585:DEBUG:Processing chunk 1/1, progress: 0.0%
+2024-11-26 11:36:53,585:DEBUG:Temporary filename: /Users/adrian/Downloads/test_0.mp3
+2024-11-26 11:36:53,585:DEBUG:Sending TTS request for chunk: hallo, ich bin's....
+2024-11-26 11:36:53,588:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-26 11:36:54,725:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-26 11:36:55,001:DEBUG:Successfully saved chunk to /Users/adrian/Downloads/test_0.mp3
+2024-11-26 11:36:55,005:DEBUG:All chunks processed, concatenating audio files
+2024-11-26 11:36:55,007:INFO:Renamed single chunk to /Users/adrian/Downloads/test.mp3
+2024-11-26 11:36:55,007:DEBUG:Final audio file saved to /Users/adrian/Downloads/test.mp3
+2024-11-26 11:36:55,007:DEBUG:Cleaning up temporary files
+2024-11-26 11:36:55,009:ERROR:Temporary file /Users/adrian/Downloads/test_0.mp3 does not exist and cannot be deleted.
+2024-11-26 11:36:55,009:DEBUG:Finished process_tts function
+2024-11-26 11:40:16,839:DEBUG:load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-11-26 11:40:16,841:DEBUG:load_verify_locations cafile='/Users/adrian/Projects/OpenAI_TTS_GUI/venv/lib/python3.12/site-packages/certifi/cacert.pem'
+2024-11-26 11:40:30,593:DEBUG:Created temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpbtik6sfp.wav
+2024-11-26 11:40:30,599:DEBUG:Starting new HTTPS connection (1): api.openai.com:443
+2024-11-26 11:40:32,078:DEBUG:https://api.openai.com:443 "POST /v1/audio/speech HTTP/1.1" 200 None
+2024-11-26 11:40:32,431:ERROR:Error during streaming TTS: 'AudioPlayer' object has no attribute 'connect'
+Traceback (most recent call last):
+  File "/Users/adrian/Projects/OpenAI_TTS_GUI/tts.py", line 165, in stream_tts
+    window.playback_control.connect(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'AudioPlayer' object has no attribute 'connect'. Did you mean: 'disconnect'?
+2024-11-26 11:40:32,440:DEBUG:Cleaned up temporary file: /var/folders/y_/rpb8rvyn2gd2zbmkyv9s9zjw0000gn/T/tmpbtik6sfp.wav
+2024-11-26 11:40:39,072:DEBUG:Starting create_tts function
+2024-11-26 11:40:39,072:ERROR:Invalid path provided

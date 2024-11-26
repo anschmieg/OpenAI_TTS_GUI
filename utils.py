@@ -1,7 +1,9 @@
 import os
+import logging
 import sys
 import subprocess
-import logging
+import time
+from ffpyplayer.player import MediaPlayer
 from decimal import Decimal
 from dotenv import load_dotenv
 
@@ -232,3 +234,14 @@ def cleanup_files(file_list, retain_files):
                 logging.error(
                     f"Temporary file {file} does not exist and cannot be deleted."
                 )
+
+
+def play_audio(file_path):
+    """Play audio file from path using ffpyplayer (ffmpeg `ffplay` wrapper)."""
+    player = MediaPlayer(file_path)
+    while True:
+        frame, val = player.get_frame()
+        if val == "eof":
+            break
+        elif frame is None:
+            time.sleep(0.01)

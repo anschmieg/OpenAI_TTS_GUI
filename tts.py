@@ -2,8 +2,11 @@ import os
 import requests
 import time
 import logging
-from threading import Thread
+import tempfile
+from threading import Thread, Event
 from decimal import Decimal
+from pydub import AudioSegment
+from pydub.playback import play
 from PyQt6.QtWidgets import QMessageBox
 from utils import (
     split_text,
@@ -14,7 +17,6 @@ from utils import (
 )
 from openai import OpenAI
 
-# Read the API key once and initialize the client
 api_key = read_api_key()
 if not api_key:
     raise ValueError(
@@ -22,11 +24,10 @@ if not api_key:
     )
 client = OpenAI(api_key=api_key)
 
-# Constants for price and API calls
 TTS_PRICE_PER_1K_CHARS = Decimal("0.015")
 TTS_HD_PRICE_PER_1K_CHARS = Decimal("0.030")
 MAX_RETRIES = 3
-RETRY_DELAY = 5  # seconds
+RETRY_DELAY = 5
 
 logging.basicConfig(
     filename="tts_app.log",
@@ -35,48 +36,56 @@ logging.basicConfig(
 )
 
 
+class AudioPlayer:
+    def __init__(self):
+        self.pause_event = Event()
+        self.abort_event = Event()
+        self.audio = None
+
+    def play(self, audio_segment):
+        self.audio = audio_segment
+        self.pause_event.clear()
+        self.abort_event.clear()
+
+        while not self.abort_event.is_set():
+            if not self.pause_event.is_set():
+                play(self.audio)
+                break
+            time.sleep(0.1)
+
+    def pause(self):
+        self.pause_event.set()
+
+    def resume(self):
+        self.pause_event.clear()
+
+    def abort(self):
+        self.abort_event.set()
+
+
 def create_tts(values, window):
-    """
-    Creates a Text-to-Speech (TTS) request based on the provided values and updates the window with progress.
-
-    Args:
-        values (dict): A dictionary containing the following keys:
-            - "text_box" (str): The text to be converted to speech.
-            - "path_entry" (str): The file path where the TTS output will be saved.
-            - "model_var" (str): The TTS model to be used.
-            - "voice_var" (str): The voice to be used for TTS.
-            - "format_var" (str): The format of the TTS output.
-            - "speed_var" (str): The speed of the speech.
-            - "retain_files" (bool): Whether to retain intermediate files.
-            - "streaming" (bool, optional): Whether to stream the speech. Defaults to False.
-        window (QWidget): The window object to update with messages and progress.
-
-    Returns:
-        None
-    """
+    """Creates a Text-to-Speech request for batch processing"""
     logging.debug("Starting create_tts function")
+
+    # Validate inputs and extract parameters
     text = values["text_box"].strip()
     path = values["path_entry"]
-    if not path or not os.path.isdir(os.path.dirname(path)):
-        logging.error("Invalid path provided")
-        window.show_message("Invalid path")
-        return
     model = values["model_var"]
     voice = values["voice_var"]
     response_format = values["format_var"]
     speed = float(values["speed_var"]) if values["speed_var"] else 1.0
+    retain_files = values["retain_files"]
     hd = "hd" in model
+
+    if not path or not os.path.isdir(os.path.dirname(path)):
+        logging.error("Invalid path provided")
+        window.show_message("Invalid path")
+        return
+
+    # Calculate and confirm price
     char_count = len(text)
     estimated_price = estimate_price(char_count, hd)
-    retain_files = values["retain_files"]
-    streaming = values.get("streaming", False)
-
-    logging.info(f"Text length: {char_count} characters")
     logging.info(f"Estimated price: ${estimated_price:.3f}")
-    logging.info(
-        f"Model: {model}, Voice: {voice}, Format: {response_format}, Speed: {speed}"
-    )
-    logging.info(f"Retain files: {retain_files}, Streaming: {streaming}")
 
     msg_box = QMessageBox()
     msg_box.setText(
@@ -85,70 +94,41 @@ def create_tts(values, window):
     msg_box.setStandardButtons(
         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
     )
-    result = msg_box.exec()
 
-    if result == QMessageBox.StandardButton.Yes:
+    if msg_box.exec() == QMessageBox.StandardButton.Yes:
         logging.debug("User confirmed to proceed with TTS")
-        window.progress_updated.emit(1)  # Set progress to 1% when starting
-        if streaming:
-            logging.debug("Starting streaming TTS in a new thread")
-            Thread(
-                target=stream_tts,
-                args=(
-                    text,
-                    path,
-                    model,
-                    voice,
-                    response_format,
-                    speed,
-                    window,
-                ),
-            ).start()
-        else:
-            logging.debug("Starting process TTS in a new thread")
-            Thread(
-                target=process_tts,
-                args=(
-                    split_text(text),
-                    path,
-                    model,
-                    voice,
-                    response_format,
-                    speed,
-                    retain_files,
-                    window,
-                ),
-            ).start()
+        window.progress_updated.emit(1)
+        Thread(
+            target=process_tts,
+            args=(
+                split_text(text),
+                path,
+                model,
+                voice,
+                response_format,
+                speed,
+                retain_files,
+                window,
+            ),
+        ).start()
     else:
         logging.debug("User declined to proceed with TTS")
 
 
 def stream_tts(values, window):
-    """
-    Streams text-to-speech (TTS) audio from values dictionary and saves to specified file path.
+    temp_file = None
+    player = AudioPlayer()
 
-    Args:
-        values (dict): Dictionary containing:
-            - text_box (str): Text to convert to speech
-            - path_entry (str): Output file path
-            - model_var (str): TTS model name
-            - voice_var (str): Voice ID
-            - format_var (str): Audio format
-            - speed_var (float): Speech speed
-        window (object): GUI window for progress updates
-
-    Raises:
-        Exception: If error occurs during TTS streaming
-    """
     try:
         text = values["text_box"].strip()
-        path = values["path_entry"]
         model = values["model_var"]
         voice = values["voice_var"]
-        response_format = values["format_var"]
         speed = float(values["speed_var"]) if values["speed_var"] else 1.0
+        response_format = "wav"
 
-        logging.debug(f"Streaming TTS request for: {text[:50]}...")
+        temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+        temp_path = temp_file.name
+        logging.debug(f"Created temporary file: {temp_path}")
 
         response = requests.post(
             "https://api.openai.com/v1/audio/speech",
@@ -172,18 +152,39 @@ def stream_tts(values, window):
             window.show_message(f"Failed to stream TTS: {response.status_code}")
             return
 
-        with open(path, "wb") as file:
+        with open(temp_path, "wb") as file:
             for chunk in response.iter_content(chunk_size=8192):
                 if chunk:
                     file.write(chunk)
                     window.progress_updated.emit(50)
 
+        audio = AudioSegment.from_wav(temp_path)
+        player_thread = Thread(target=player.play, args=(audio,))
+        player_thread.start()
+
+        window.playback_control.connect(
+            lambda cmd: {
+                "pause": player.pause,
+                "resume": player.resume,
+                "abort": player.abort,
+            }.get(cmd, lambda: None)()
+        )
+
         window.progress_updated.emit(100)
-        logging.info(f"Streaming TTS saved to {path}")
+        logging.info("Audio streaming and playback started")
+        player_thread.join()
 
     except Exception as e:
         logging.exception(f"Error during streaming TTS: {e}")
         window.show_message(f"Error during streaming TTS: {str(e)}")
+    finally:
+        if temp_file:
+            try:
+                os.unlink(temp_file.name)
+                logging.debug(f"Cleaned up temporary file: {temp_file.name}")
+            except OSError as e:
+                logging.error(f"Error removing temporary file: {e}")
+        window.reset_playback_ui()
 
 
 def process_tts(
